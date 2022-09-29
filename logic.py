@@ -1,4 +1,4 @@
-# import to 2048.py #
+# import to 2048.py
 
 import random
 
