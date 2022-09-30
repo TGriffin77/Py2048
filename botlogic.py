@@ -87,10 +87,10 @@ def simulate_move(matrix_test, matrix_orig, move):
 			if matrix_test[i][3] == matrix_test[i + 1][3]:
 				next_move+=1
 
-	return [score_incr, net_total_cells, next_move] #ORIGINAL
-	#return [score_incr, next_move, net_total_cells] #inconsistent
-	#return [next_move, net_total_cells, score_incr] #2500+ consistently
-	#return [next_move, score_incr, net_total_cells] # got 512
-	#return [net_total_cells, next_move, score_incr] #2500+ consistently
-	#return [net_total_cells, score_incr, next_move] #garbage
+	return [score_incr, net_total_cells, next_move] 
+	#return [score_incr, next_move, net_total_cells] 
+	#return [next_move, net_total_cells, score_incr] 
+	#return [next_move, score_incr, net_total_cells] 
+	#return [net_total_cells, next_move, score_incr] 
+	#return [net_total_cells, score_incr, next_move] 
 	
