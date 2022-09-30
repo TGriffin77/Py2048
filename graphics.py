@@ -1,21 +1,21 @@
 # import to 2048.py
 
 import pygame
-import os
-
 
 def start_graphics():
 	pygame.init()
-	screen = pygame.display.set_mode((640,640))
+	screen = pygame.display.set_mode((640,800))
 	pygame.display.set_caption('2048')
 
 	screen.fill((187,173,160))
-	font = pygame.font.Font("assets/ClearSans-Bold.ttf", 74)
-
-	return screen, font
-
-def place_blocks(screen, matrix, font):
 	
+
+	return screen
+
+def place_blocks(screen, matrix):
+	
+	font_size = 74
+
 	color_grid = []
 	for i in range(4):
 		color_grid.append([0]*4)
@@ -23,6 +23,7 @@ def place_blocks(screen, matrix, font):
 	font_color_grid = []
 	for i in range(4):
 		font_color_grid.append([(249,246,242)]*4)
+
 
 	for i in range(4):
 		for j in range(4):
@@ -51,11 +52,18 @@ def place_blocks(screen, matrix, font):
 					color_grid[i][j] = (237,200,80)
 				case 1024:
 					color_grid[i][j] = (237,197,63)
+					font_size = 58
 				case 2048:
 					color_grid[i][j] = (237,194,46)
+					font_size = 58
+				case _:
+					color_grid[i][j] = (60,58,50)
+					font_size = 58
+
+	font = pygame.font.Font("assets/ClearSans-Bold.ttf", font_size)
 
 	# place the block and text
-	block_top = 8
+	block_top = 168
 	WIDTH = 144
 	HEIGHT = 144
 	for row in range(4):
@@ -70,3 +78,21 @@ def place_blocks(screen, matrix, font):
 				display_text.center = cell.center
 				screen.blit(text, display_text)
 		block_top += 160
+
+def update_score(screen, score):
+	font = pygame.font.Font("assets/ClearSans-Bold.ttf", 64)
+
+	scorebox = pygame.Rect(8, 82, 304, 78)
+	scoreboard = pygame.draw.rect(screen, (143,122,102), scorebox, border_radius=2)
+
+	score_text = font.render(str(score), True, (249,246,242))
+	display_score = score_text.get_rect()
+	display_score.center = scoreboard.center
+	screen.blit(score_text, display_score)
+
+	text = font.render("Score", True, (119,110,101))
+	display_text = text.get_rect()
+	display_text.midbottom = scoreboard.midtop
+	screen.blit(text, display_text)
+
+	
