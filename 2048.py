@@ -1,10 +1,12 @@
 # import logic functions
+import botlogic
 import logic
 import graphics
 from constants import *
 
 import pygame
 import sys
+import time
 
 if __name__ == '__main__':
 	
@@ -17,6 +19,7 @@ if __name__ == '__main__':
 	won = False
 	game_status = 'GAME NOT OVER'
 
+
 while True:
 
 	graphics.place_blocks(screen, mat)
@@ -27,6 +30,10 @@ while True:
 		graphics.win_screen(screen)
 	graphics.new_game_button(screen)
 	pygame.display.update()
+
+	# For bot playing only
+	time.sleep(.01)
+	botlogic.input_next_move(mat)
 
 	mouse = pygame.mouse.get_pos()
 
@@ -56,7 +63,6 @@ while True:
 
 				# get the current state and print it
 				status = logic.get_current_state(mat, won)
-				print(status)
 
 				# if game not over then continue
 				if(status == 'GAME NOT OVER' and flag):
@@ -68,8 +74,7 @@ while True:
 			if event.key == pygame.K_RIGHT or event.key == ord('a'):
 				mat, flag, score_incr = logic.move_left(mat)
 				status = logic.get_current_state(mat, won)
-				print(status)
-				if(status == 'GAME NOT OVER' and flag):
+				if status == 'GAME NOT OVER' and flag:
 					logic.add_new_2(mat)
 				else:
 					game_status = status
@@ -78,8 +83,7 @@ while True:
 			if event.key == pygame.K_UP or event.key == ord('s'):
 				mat, flag, score_incr = logic.move_down(mat)
 				status = logic.get_current_state(mat, won)
-				print(status)
-				if(status == 'GAME NOT OVER' and flag):
+				if status == 'GAME NOT OVER' and flag:
 					logic.add_new_2(mat)
 				else:
 					game_status = status
@@ -88,8 +92,7 @@ while True:
 			if event.key == pygame.K_UP or event.key == ord('d'):
 				mat, flag, score_incr = logic.move_right(mat)
 				status = logic.get_current_state(mat, won)
-				print(status)
-				if(status == 'GAME NOT OVER' and flag):
+				if status == 'GAME NOT OVER' and flag:
 					logic.add_new_2(mat)
 				else:
 					game_status = status

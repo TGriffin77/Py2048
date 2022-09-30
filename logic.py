@@ -42,7 +42,7 @@ def add_new_2(mat):
 		number = random.choice([2,4])
 
 		# While loop will break when it finds an empty cell
-		while(mat[r][c] != 0):
+		while mat[r][c] != 0:
 			# generators a random index
 			r = random.randrange(0, 4)
 			c = random.randrange(0, 4)
@@ -57,27 +57,27 @@ def get_current_state(mat, won):
 	if not won:
 		for i in range(4):
 			for j in range(4):
-				if(mat[i][j]== 2048):
+				if mat[i][j]== 2048:
 					return 'WON'
 
 	# If there is still an empty cell, GAME NOT OVER
 	for i in range(4):
 		for j in range(4):
-			if(mat[i][j]== 0):
+			if mat[i][j]== 0:
 				return 'GAME NOT OVER'
 
 	# Any adjacent cells can be combined, GAME NOT OVER
 	for i in range(3):
 		for j in range(3):
-			if(mat[i][j]== mat[i + 1][j] or mat[i][j]== mat[i][j + 1]):
+			if mat[i][j]== mat[i + 1][j] or mat[i][j]== mat[i][j + 1]:
 				return 'GAME NOT OVER'
 
 	for j in range(3):
-		if(mat[3][j]== mat[3][j + 1]):
+		if mat[3][j]== mat[3][j + 1]:
 			return 'GAME NOT OVER'
 
 	for i in range(3):
-		if(mat[i][3]== mat[i + 1][3]):
+		if mat[i][3]== mat[i + 1][3]:
 			return 'GAME NOT OVER'
 
 	# Else, LOSE
@@ -98,13 +98,13 @@ def compress(mat):
 	for i in range(4):
 		pos = 0
 		for j in range(4):
-			if(mat[i][j] != 0):
+			if mat[i][j] != 0:
 				
 				# if cell is not empty, place into the next unoccupied cell in that row
 				new_mat[i][pos] = mat[i][j]
 				
 				# Changes to True, if the value is not in same cell as before
-				if(j != pos):
+				if j != pos:
 					changed = True
 				pos += 1
 
@@ -122,7 +122,7 @@ def merge(mat):
 		for j in range(3):
 
 			# if cell has same value as next cell and not zero
-			if(mat[i][j] == mat[i][j + 1] and mat[i][j] != 0):
+			if mat[i][j] == mat[i][j + 1] and mat[i][j] != 0:
 
 				# double current cell, make next cell empty
 				mat[i][j] = mat[i][j] * 2
