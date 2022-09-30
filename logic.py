@@ -10,13 +10,6 @@ def start_game():
 	for i in range(4):
 		mat.append([0]*4)
 
-	# printing controls for user
-	print("Commands are as follows : ")
-	print("'W' or 'w' : Move Up")
-	print("'S' or 's' : Move Down")
-	print("'A' or 'a' : Move Left")
-	print("'D' or 'd' : Move Right")
-
 	# calls the add_new to randomly place a 2 on the board
 	add_new(mat)
 	# calls the add_new2 to randomly place either a 2 or 4 on the board
@@ -58,13 +51,14 @@ def add_new_2(mat):
 		mat[r][c] = number
 
 # function to get current state of game
-def get_current_state(mat):
+def get_current_state(mat, won):
 
 	# if any cell value equals 2048, WIN
-	for i in range(4):
-		for j in range(4):
-			if(mat[i][j]== 2048):
-				return 'WON'
+	if not won:
+		for i in range(4):
+			for j in range(4):
+				if(mat[i][j]== 2048):
+					return 'WON'
 
 	# If there is still an empty cell, GAME NOT OVER
 	for i in range(4):
@@ -89,12 +83,7 @@ def get_current_state(mat):
 	# Else, LOSE
 	return 'LOST'
 
-# all the functions defined below
-# are for left swap initially.
-
-# function to compress the grid
-# after every step before and
-# after merging cells.
+# Moves everything to max left position
 def compress(mat):
 
 	# Determines if change during turn
@@ -122,8 +111,7 @@ def compress(mat):
 	# return new matrix and change-state
 	return new_mat, changed
 
-# function to merge the cells
-# in matrix after compressing
+# Merge Like numbers
 def merge(mat):
 	
 	changed = False
@@ -133,27 +121,20 @@ def merge(mat):
 	for i in range(4):
 		for j in range(3):
 
-			# if current cell has same value as
-			# next cell in the row and they
-			# are non empty then
+			# if cell has same value as next cell and not zero
 			if(mat[i][j] == mat[i][j + 1] and mat[i][j] != 0):
 
-				# double current cell value and
-				# empty the next cell
+				# double current cell, make next cell empty
 				mat[i][j] = mat[i][j] * 2
 				mat[i][j + 1] = 0
 				score_incr +=mat[i][j]
 
-				# make bool variable True indicating
-				# the new grid after merging is
-				# different.
+				# check if a change happened
 				changed = True
 
 	return mat, changed, score_incr
 
-# function to reverse the matrix
-# means reversing the content of
-# each row (reversing the sequence)
+# reverse the matrix
 def reverse(mat):
 	new_mat =[]
 	for i in range(4):
@@ -162,9 +143,7 @@ def reverse(mat):
 			new_mat[i].append(mat[i][3 - j])
 	return new_mat
 
-# function to get the transpose
-# of matrix means interchanging
-# rows and column
+# transpose the matrix
 def transpose(mat):
 	new_mat = []
 	for i in range(4):
@@ -173,70 +152,45 @@ def transpose(mat):
 			new_mat[i].append(mat[j][i])
 	return new_mat
 
-# function to update the matrix
-# if we move / swipe left
+# moves cell left
 def move_left(grid):
 
-	# first compress the grid
 	new_grid, changed1 = compress(grid)
 
-	# then merge the cells.
 	new_grid, changed2, score_incr = merge(new_grid)
 	
 	changed = changed1 or changed2
 
-	# again compress after merging.
 	new_grid, temp = compress(new_grid)
 
-	# return new matrix and bool changed
-	# telling whether the grid is same
-	# or different
 	return new_grid, changed, score_incr
 
-# function to update the matrix
-# if we move / swipe right
+# moves cells right
 def move_right(grid):
 
-	# to move right we just reverse
-	# the matrix
 	new_grid = reverse(grid)
 
-	# then move left
 	new_grid, changed, score_incr = move_left(new_grid)
 
-	# then again reverse matrix will
-	# give us desired result
 	new_grid = reverse(new_grid)
 	return new_grid, changed, score_incr
 
-# function to update the matrix
-# if we move / swipe up
+# moves cells up
 def move_up(grid):
 
-	# to move up we just take
-	# transpose of matrix
 	new_grid = transpose(grid)
 
-	# then move left (calling all
-	# included functions) then
 	new_grid, changed, score_incr = move_left(new_grid)
 
-	# again take transpose will give
-	# desired results
 	new_grid = transpose(new_grid)
 	return new_grid, changed, score_incr
 
-# function to update the matrix
-# if we move / swipe down
+# moves cells down
 def move_down(grid):
 
-	# to move down we take transpose
 	new_grid = transpose(grid)
 
-	# move right and then again
 	new_grid, changed, score_incr = move_right(new_grid)
 
-	# take transpose will give desired
-	# results.
 	new_grid = transpose(new_grid)
 	return new_grid, changed, score_incr

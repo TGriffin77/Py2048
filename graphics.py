@@ -1,19 +1,23 @@
 # import to 2048.py
 
 import pygame
+from constants import *
 
 def start_graphics():
 	pygame.init()
-	screen = pygame.display.set_mode((640,800))
+	screen = pygame.display.set_mode(RES)
 	pygame.display.set_caption('2048')
 
-	screen.fill((187,173,160))
-	
+	screen.fill(BG_COLOR)
+	new_game_button(screen)
 
+	icon = pygame.image.load('assets/2048_logo.png')
+	pygame.display.set_icon(icon)
+	
 	return screen
 
-def place_blocks(screen, matrix):
-	
+
+def cell_description(matrix):
 	font_size = 74
 
 	color_grid = []
@@ -60,7 +64,14 @@ def place_blocks(screen, matrix):
 					color_grid[i][j] = (60,58,50)
 					font_size = 58
 
-	font = pygame.font.Font("assets/ClearSans-Bold.ttf", font_size)
+	return color_grid, font_color_grid, font_size
+
+
+def place_blocks(screen, matrix):
+	
+	color_grid, font_color_grid, font_size = cell_description(matrix)
+
+	font = pygame.font.Font(FONT, font_size)
 
 	# place the block and text
 	block_top = 168
@@ -79,20 +90,69 @@ def place_blocks(screen, matrix):
 				screen.blit(text, display_text)
 		block_top += 160
 
+
+def only_text(screen, center, color, font, string):
+	text = font.render(string, True, color)
+	display_text = text.get_rect()
+	display_text.center = center
+	screen.blit(text, display_text)
+
+
+def text_with_box(screen, left, top, width, height, box_color, font, font_color, string):
+	box = pygame.Rect(left, top, width, height)
+	box_rect = pygame.draw.rect(screen, box_color, box, border_radius=2)
+
+	box_text = font.render(string, True, font_color)
+	display_text = box_text.get_rect()
+	display_text.center = box_rect.center
+	screen.blit(box_text, display_text)
+
+	return box
+
+
 def update_score(screen, score):
-	font = pygame.font.Font("assets/ClearSans-Bold.ttf", 64)
+	font = pygame.font.Font(FONT, 64)
 
-	scorebox = pygame.Rect(8, 82, 304, 78)
-	scoreboard = pygame.draw.rect(screen, (143,122,102), scorebox, border_radius=2)
-
-	score_text = font.render(str(score), True, (249,246,242))
-	display_score = score_text.get_rect()
-	display_score.center = scoreboard.center
-	screen.blit(score_text, display_score)
+	scoreboard = text_with_box(screen, 8, 82, 304, 78, BOX_COLOR, font, TEXT_COLOR, str(score))
 
 	text = font.render("Score", True, (119,110,101))
 	display_text = text.get_rect()
 	display_text.midbottom = scoreboard.midtop
 	screen.blit(text, display_text)
 
+
+def new_game_button(screen):
+	font = pygame.font.Font(FONT, 56)
 	
+	text_with_box(screen, 328, 82, 304, 78, BOX_COLOR, font, TEXT_COLOR, "New Game")
+
+
+def lose_screen(screen):
+	font = pygame.font.Font(FONT, 56)
+	#Alpha color
+	s = pygame.Surface((640,640))
+	s.set_alpha(128)
+	s.fill(BG_COLOR)
+	screen.blit(s, (0,160))
+
+	# Game Over Text
+	only_text(screen, (320, 420), TEXT_COLOR, font, "Game Over")
+
+	# Try again? Button
+	font = pygame.font.Font(FONT, 36)
+	text_with_box(screen, 204, 480, 232, 52, BOX_COLOR, font, TEXT_COLOR, "Try Again?")
+
+def win_screen(screen):
+	font = pygame.font.Font(FONT, 56)
+	# Alpha color
+	s = pygame.Surface((640,640))
+	s.set_alpha(128)
+	s.fill(BG_COLOR)
+	screen.blit(s, (0,160))
+
+	# You Win! Text
+	only_text(screen, (320, 420), TEXT_COLOR, font, "You Win!")
+
+	# Continue? Button
+	font = pygame.font.Font(FONT, 36)
+	text_with_box(screen, 204, 480, 232, 52, BOX_COLOR, font, TEXT_COLOR, "Continue?")
