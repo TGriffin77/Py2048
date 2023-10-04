@@ -73,10 +73,18 @@ def simulate_move(matrix_test, matrix_orig, move):
 	
 	next_move = 0
 	if score_incr and net_total_cells == 0:
-		# Any adjacent cells can be combined
+	# Any adjacent cells can be combined
 		for i in range(3):
 			for j in range(3):
 				if matrix_test[i][j] == matrix_test[i + 1][j] or matrix_test[i][j] == matrix_test[i][j + 1]:
+					next_move+=1
+
+		if (matrix_test[0][0] == matrix_test[0][3] and matrix_test[0][1] == 0 and matrix_test[0][2] == 0) or (matrix_test[0][0] == matrix_test[3][0] and matrix_test[1][0] == 0 and matrix_test[2][0] == 0):
+			next_move+=1
+
+		for i in range(2):
+			for j in range(2):
+				if (matrix_test[i][j] == matrix_test[i][j+2] and matrix_test[i][j+1] == 0) or (matrix_test[i][j] == matrix_test[i + 2][j] and matrix_test[i+1][j] == 0):
 					next_move+=1
 
 		for j in range(3):
