@@ -1,5 +1,4 @@
 # import logic functions
-import botlogic
 import logic
 import graphics
 from constants import *
