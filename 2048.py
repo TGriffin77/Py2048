@@ -31,10 +31,6 @@ while True:
 	graphics.new_game_button(screen)
 	pygame.display.update()
 
-	# For bot playing only
-	time.sleep(.01)
-	botlogic.input_next_move(mat)
-
 	mouse = pygame.mouse.get_pos()
 
 	score_incr = 0
